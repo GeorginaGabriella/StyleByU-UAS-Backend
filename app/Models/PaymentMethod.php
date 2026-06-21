@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ShippingMethod extends Model
+class PaymentMethod extends Model
 {
     protected $fillable = [
         'name',
+        'type',
         'description',
-        'price',
-        'estimated_days'
+        'is_active'
     ];
 }
