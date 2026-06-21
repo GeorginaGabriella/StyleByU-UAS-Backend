@@ -11,6 +11,10 @@ use App\Http\Controllers\ProductVariantController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -37,6 +41,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+
+    Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
+    Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::get('/addresses/{address}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+
+    Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
+    Route::put('/user/edit', [UserController::class, 'update'])->name('user.update');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -51,4 +67,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products/{product}/variants', [ProductVariantController::class, 'index'])->name('variants.index');
     Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
     Route::delete('/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('variants.destroy');
+    Route::get('/admin/shipping', [ShippingController::class, 'index'])
+        ->name('admin.shipping.index');
 });
