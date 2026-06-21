@@ -15,15 +15,16 @@
 
     Email
     <br>
-
     <input type="email" name="email">
-
     <br><br>
 
     Password
     <br>
+    <input type="password" name="password" id="password">
 
-    <input type="password" name="password">
+    <button type="button" onclick="togglePassword()">
+        👁
+    </button>
 
     <br><br>
 
@@ -37,3 +38,19 @@
 <a href="{{ route('register') }}">
     Register
 </a>
+
+<script>
+function togglePassword()
+{
+    let password = document.getElementById('password');
+
+    if(password.type === 'password')
+    {
+        password.type = 'text';
+    }
+    else
+    {
+        password.type = 'password';
+    }
+}
+</script>
