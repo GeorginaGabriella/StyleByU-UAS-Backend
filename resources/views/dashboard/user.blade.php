@@ -1,19 +1,15 @@
 <h1>USER DASHBOARD</h1>
 
-<p>
-    Halo {{ auth()->user()->name }}
-</p>
+<p>Halo {{ auth()->user()->name }}</p>
 
 <ul>
-    <li>Browse Product</li>
-    <li>My Cart</li>
+    <li><a href="{{ route('products.index') }}">Browse Product</a></li>
+    <li><a href="{{ route('cart.index') }}">My Cart</a></li>
+    <li><a href="{{ route('wishlist.index') }}">My Wishlist</a></li>
     <li>My Orders</li>
 </ul>
 
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-
-    <button type="submit">
-        Logout
-    </button>
+    <button type="submit">Logout</button>
 </form>
