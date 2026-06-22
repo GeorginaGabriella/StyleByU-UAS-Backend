@@ -1,8 +1,11 @@
 <h1>ADMIN DASHBOARD</h1>
 
-<p>Halo {{ auth()->user()->name }}</p>
+<p>
+    Halo {{ auth()->user()->name }}
+</p>
 
 <ul>
+    <li><a href="{{ route('home') }}">Homepage</a></li>
     <li><a href="{{ route('categories.index') }}">Category Management</a></li>
     <li><a href="{{ route('brands.index') }}">Brand Management</a></li>
     <li><a href="{{ route('banners.index') }}">Banner Management</a></li>
@@ -14,5 +17,8 @@
 
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <button type="submit">Logout</button>
+
+    <button type="submit">
+        Logout
+    </button>
 </form>

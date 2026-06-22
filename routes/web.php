@@ -90,10 +90,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
 
-  
     Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
     Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
-
 
     Route::get('/admin/coupons', [CouponController::class, 'index'])->name('coupons.index');
     Route::get('/admin/coupons/create', [CouponController::class, 'create'])->name('coupons.create');
