@@ -1,22 +1,18 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace Database\Seeders;
 
-return new class extends Migration
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
 {
-    public function up(): void
+    public function run(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('user')->after('id');
-        });
+        $this->call([
+            AdminSeeder::class,
+            LogisticSeeder::class,
+            CouponSeeder::class,
+            NotificationSeeder::class,
+        ]);
     }
-
-    public function down(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
-    }
-};
+}
