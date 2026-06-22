@@ -1,11 +1,13 @@
+@if(session('success'))
+<p style="color:green;">{{ session('success') }}</p>
+@endif
+
 <h1>REGISTER STYLEBYU</h1>
 
 @if ($errors->any())
 <ul>
     @foreach ($errors->all() as $error)
-        <li style="color:red;">
-            {{ $error }}
-        </li>
+        <li style="color:red;">{{ $error }}</li>
     @endforeach
 </ul>
 @endif
@@ -27,9 +29,7 @@
     <br>
     <input type="password" name="password" id="password">
 
-    <button type="button" onclick="togglePassword('password')">
-        👁
-    </button>
+    <button type="button" onclick="togglePassword('password')">👁</button>
 
     <br><br>
 
@@ -37,22 +37,16 @@
     <br>
     <input type="password" name="password_confirmation" id="password_confirmation">
 
-    <button type="button" onclick="togglePassword('password_confirmation')">
-        👁
-    </button>
+    <button type="button" onclick="togglePassword('password_confirmation')">👁</button>
 
     <br><br>
 
-    <button type="submit">
-        Register
-    </button>
+    <button type="submit">Register</button>
 </form>
 
 <br>
 
-<a href="{{ route('login') }}">
-    Login
-</a>
+<a href="{{ route('login') }}">Login</a>
 
 <script>
 function togglePassword(id)

@@ -15,6 +15,10 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CouponController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -23,7 +27,6 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 });
@@ -34,25 +37,29 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-
     Route::put('/cart-item/{cartItem}', [CartItemController::class, 'update'])->name('cart-item.update');
     Route::delete('/cart-item/{cartItem}', [CartItemController::class, 'destroy'])->name('cart-item.destroy');
-
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-
     Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
     Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
     Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
     Route::get('/addresses/{address}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
     Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
-
     Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/edit', [UserController::class, 'update'])->name('user.update');
+
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/items', [OrderItemController::class, 'index'])->name('order_items.index');
+    Route::get('/payments/pay/{order}', [PaymentController::class, 'pay'])->name('payments.pay');
+    Route::post('/payments/pay/{order}', [PaymentController::class, 'process'])->name('payments.process');
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -67,6 +74,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/products/{product}/variants', [ProductVariantController::class, 'index'])->name('variants.index');
     Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
     Route::delete('/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('variants.destroy');
-    Route::get('/admin/shipping', [ShippingController::class, 'index'])
-        ->name('admin.shipping.index');
+
+    Route::get('/admin/shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
+
+    Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
+    Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
+    Route::get('/admin/coupons', [CouponController::class, 'index'])->name('coupons.index');
+    Route::get('/admin/coupons/create', [CouponController::class, 'create'])->name('coupons.create');
+    Route::post('/admin/coupons', [CouponController::class, 'store'])->name('coupons.store');
+    Route::delete('/admin/coupons/{coupon}', [CouponController::class, 'destroy'])->name('coupons.destroy');
 });

@@ -2,36 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Payment extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'name',
-        'description',
-        'image',
-        'price',
-        'stock',
-        'is_active',
-        'category_id',
-        'brand_id'
+        'order_id',
+        'payment_method_id',
+        'status'
     ];
 
-    public function category()
+    public function order()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Order::class);
     }
 
-    public function brand()
+    public function method()
     {
-        return $this->belongsTo(Brand::class);
-    }
-
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class);
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
     }
 }

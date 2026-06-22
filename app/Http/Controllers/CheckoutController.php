@@ -6,52 +6,30 @@ use App\Models\Cart;
 use App\Models\Address;
 use App\Models\ShippingMethod;
 use App\Models\PaymentMethod;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
-        $cart = Cart::firstOrCreate([
-            'user_id' => auth()->id()
-        ]);
+        $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
         if ($cart->items->count() == 0) {
-            return redirect()
-                ->route('cart.index')
-                ->with('error', 'Keranjang masih kosong');
+            return redirect()->route('cart.index')->with('error', 'Keranjang masih kosong');
         }
 
-        $addresses = Address::where(
-            'user_id',
-            auth()->id()
-        )->get();
-
+        $addresses = Address::where('user_id', auth()->id())->get();
         $shippings = ShippingMethod::all();
-
-        $payments = PaymentMethod::where(
-            'is_active',
-            true
-        )->get();
+        $payments = PaymentMethod::where('is_active', true)->get();
 
         $totalCart = 0;
 
         foreach ($cart->items as $item) {
-            $totalCart +=
-                $item->price *
-                $item->quantity;
+            $totalCart += $item->price * $item->quantity;
         }
 
-        return view(
-            'checkout.index',
-            compact(
-                'cart',
-                'addresses',
-                'shippings',
-                'payments',
-                'totalCart'
-            )
-        );
+        return view('checkout.index', compact('cart', 'addresses', 'shippings', 'payments', 'totalCart'));
     }
 
     public function process(Request $request)
@@ -62,33 +40,23 @@ class CheckoutController extends Controller
             'payment_method_id' => 'required|exists:payment_methods,id'
         ]);
 
-        $address = Address::find(
-            $request->address_id
-        );
+        $address = Address::find($request->address_id);
 
         if ($address->user_id != auth()->id()) {
             abort(403);
         }
 
-        $cart = Cart::firstOrCreate([
-            'user_id' => auth()->id()
-        ]);
+        $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
         $totalCart = 0;
 
         foreach ($cart->items as $item) {
-            $totalCart +=
-                $item->price *
-                $item->quantity;
+            $totalCart += $item->price * $item->quantity;
         }
 
-        $shipping = ShippingMethod::find(
-            $request->shipping_method_id
-        );
+        $shipping = ShippingMethod::find($request->shipping_method_id);
 
-        $grandTotal =
-            $totalCart +
-            $shipping->price;
+        $grandTotal = $totalCart + $shipping->price;
 
         session([
             'checkout_data' => [
@@ -100,11 +68,7 @@ class CheckoutController extends Controller
             ]
         ]);
 
-        return redirect()
-            ->route('dashboard')
-            ->with(
-                'success',
-                'Checkout berhasil! Menunggu proses Order oleh sistem.'
-            );
+        $orderController = new OrderController();
+        return $orderController->store();
     }
 }
