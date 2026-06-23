@@ -94,7 +94,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('variants.destroy');
 
     Route::get('/admin/shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
-
+    Route::get('/admin/shipping/{shipping}/edit', [ShippingController::class, 'edit'])->name('admin.shipping.edit');
+    Route::put('/admin/shipping/{shipping}', [ShippingController::class, 'update'])->name('admin.shipping.update');
+    
     Route::get('/admin/orders', [OrderController::class, 'adminIndex'])->name('admin.orders.index');
     Route::put('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.updateStatus');
 
