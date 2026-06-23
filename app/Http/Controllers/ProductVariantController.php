@@ -30,12 +30,36 @@ class ProductVariantController extends Controller
             'price' => $request->price
         ]);
 
-        return back()->with('success', 'Variant created successfully.');
+        return back()->with('success', 'Varian berhasil dibuat.');
+    }
+
+        public function edit(ProductVariant $variant)
+    {
+        $product = Product::findOrFail($variant->product_id);
+        return view('variants.edit', compact('product', 'variant'));
+    }
+
+    public function update(Request $request, ProductVariant $variant)
+    {
+        $request->validate([
+            'name' => 'required',
+            'stock' => 'required|integer',
+            'price' => 'nullable|numeric'
+        ]);
+
+        $variant->update([
+            'name' => $request->name,
+            'stock' => $request->stock,
+            'price' => $request->price
+        ]);
+
+        return redirect()->route('variants.index', $variant->product_id)
+            ->with('success', 'Varian berhasil diperbarui.');
     }
 
     public function destroy(ProductVariant $variant)
     {
         $variant->delete();
-        return back()->with('success', 'Variant deleted successfully.');
+        return back()->with('success', 'Varian berhasil dihapus.');
     }
 }

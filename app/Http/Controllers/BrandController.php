@@ -10,7 +10,6 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::all();
-
         return view('brands.index', compact('brands'));
     }
 
@@ -21,17 +20,9 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
-        Brand::create(
-            $request->only('name')
-        );
-
-        return redirect()
-            ->route('brands.index')
-            ->with('success', 'Brand created successfully.');
+        $request->validate(['name' => 'required']);
+        Brand::create($request->only('name'));
+        return redirect()->route('brands.index')->with('success', 'Brand berhasil dibuat.');
     }
 
     public function show(Brand $brand)
@@ -46,36 +37,17 @@ class BrandController extends Controller
 
     public function update(Request $request, Brand $brand)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
-        $brand->update(
-            $request->only('name')
-        );
-
-        return redirect()
-            ->route('brands.index')
-            ->with('success', 'Brand updated successfully.');
+        $request->validate(['name' => 'required']);
+        $brand->update($request->only('name'));
+        return redirect()->route('brands.index')->with('success', 'Brand berhasil diperbarui.');
     }
 
     public function destroy(Brand $brand)
     {
         if ($brand->products()->count() > 0) {
-
-            return back()->with(
-                'error',
-                'Brand masih digunakan product'
-            );
+            return back()->with('error', 'Brand masih digunakan oleh produk');
         }
-
         $brand->delete();
-
-        return redirect()
-            ->route('brands.index')
-            ->with(
-                'success',
-                'Brand deleted successfully.'
-            );
+        return redirect()->route('brands.index')->with('success', 'Brand berhasil dihapus.');
     }
 }

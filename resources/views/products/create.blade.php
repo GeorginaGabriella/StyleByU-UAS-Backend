@@ -1,33 +1,29 @@
-<h1>Tambah Product</h1>
+<h1>Tambah Produk Baru</h1>
 
 <form method="POST" action="{{ route('products.store') }}">
-@csrf
-
-Nama:<br>
-<input type="text" name="name"><br><br>
-
-Description:<br>
-<textarea name="description"></textarea><br><br>
-
-Price:<br>
-<input type="number" name="price"><br><br>
-
-Stock:<br>
-<input type="number" name="stock"><br><br>
-
-Category:<br>
-<select name="category_id">
-@foreach($categories as $c)
-<option value="{{ $c->id }}">{{ $c->name }}</option>
-@endforeach
-</select><br><br>
-
-Brand:<br>
-<select name="brand_id">
-@foreach($brands as $b)
-<option value="{{ $b->id }}">{{ $b->name }}</option>
-@endforeach
-</select><br><br>
-
-<button>Simpan</button>
+    @csrf
+    Nama Produk:<br>
+    <input type="text" name="name" required><br><br>
+    Deskripsi:<br>
+    <textarea name="description"></textarea><br><br>
+    Harga:<br>
+    <input type="number" name="price" required><br><br>
+    Stok:<br>
+    <input type="number" name="stock" required><br><br>
+    Kategori:<br>
+    <select name="category_id">
+        @foreach($categories as $c)
+        <option value="{{ $c->id }}">{{ $c->name }}</option>
+        @endforeach
+    </select><br><br>
+    Merek:<br>
+    <select name="brand_id">
+        @foreach($brands as $b)
+        <option value="{{ $b->id }}">{{ $b->name }}</option>
+        @endforeach
+    </select><br><br>
+    <button>Simpan Produk</button>
 </form>
+
+<br>
+<a href="{{ route('products.index') }}">Kembali</a>

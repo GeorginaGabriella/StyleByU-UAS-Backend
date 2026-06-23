@@ -16,14 +16,14 @@ class NotificationSeeder extends Seeder
             Notification::create([
                 'user_id' => $user->id,
                 'title' => 'Selamat Datang di StyleByU!',
-                'message' => 'Terima kasih sudah bergabung. Jangan lupa cek produk terbaru kami.',
+                'message' => 'Terima kasih sudah bergabung.',
                 'is_read' => false
             ]);
 
             Notification::create([
                 'user_id' => $user->id,
                 'title' => 'Promo Spesial',
-                'message' => 'Dapatkan diskon 10% untuk pembelian pertama dengan kode: HEMAT10K',
+                'message' => 'Dapatkan diskon 10% dengan kode: HEMAT10K',
                 'is_read' => false
             ]);
         }

@@ -6,10 +6,6 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Address;
-use App\Models\Order;
-use App\Models\Review;
-use App\Models\Notification as AppNotification;
 
 class User extends Authenticatable
 {
@@ -57,7 +53,7 @@ class User extends Authenticatable
 
     public function notifications()
     {
-        return $this->hasMany(AppNotification::class);
+        return $this->hasMany(Notification::class);
     }
 
     public function unreadNotifications()

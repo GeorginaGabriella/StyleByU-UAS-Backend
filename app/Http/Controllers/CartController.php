@@ -34,21 +34,14 @@ class CartController extends Controller
         $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
 
         $variant = null;
-
         if ($request->product_variant_id) {
             $variant = ProductVariant::findOrFail($request->product_variant_id);
 
             $query = CartItem::where('cart_id', $cart->id)
-                ->where('product_id', $product->id);
-
-            if ($variant) {
-                $query->where('product_variant_id', $variant->id);
-            } else {
-                $query->whereNull('product_variant_id');
-            }
+                ->where('product_id', $product->id)
+                ->where('product_variant_id', $variant->id);
 
             $existingItem = $query->first();
-
             $newQty = $request->quantity;
 
             if ($existingItem) {
@@ -56,7 +49,7 @@ class CartController extends Controller
             }
 
             if ($newQty > $variant->stock) {
-                return back()->with('error', 'Stock tidak cukup');
+                return back()->with('error', 'Stock variant tidak cukup');
             }
         } else {
             if ($request->quantity > $product->stock) {
@@ -74,7 +67,6 @@ class CartController extends Controller
         }
 
         $item = $query->first();
-
         $price = $variant && $variant->price ? $variant->price : $product->price;
 
         if ($item) {

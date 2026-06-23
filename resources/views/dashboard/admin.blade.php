@@ -1,24 +1,23 @@
-<h1>ADMIN DASHBOARD</h1>
+<h1>DASHBOARD ADMIN</h1>
 
-<p>
-    Halo {{ auth()->user()->name }}
-</p>
+@if(session('success'))
+    <p style="color:green">{{ session('success') }}</p>
+@endif
+
+<p>Halo, <strong>{{ auth()->user()->name }}</strong> (ADMIN)</p>
 
 <ul>
-    <li><a href="{{ route('home') }}">Homepage</a></li>
-    <li><a href="{{ route('categories.index') }}">Category Management</a></li>
-    <li><a href="{{ route('brands.index') }}">Brand Management</a></li>
-    <li><a href="{{ route('banners.index') }}">Banner Management</a></li>
-    <li><a href="{{ route('products.create') }}">Product Management</a></li>
-    <li><a href="{{ route('admin.orders.index') }}">Order Management</a></li>
-    <li><a href="{{ route('admin.shipping.index') }}">Shipping Methods</a></li>
-    <li><a href="{{ route('coupons.index') }}">Coupon Management</a></li>
+    <li><a href="{{ route('home') }}">Beranda</a></li>
+    <li><a href="{{ route('categories.index') }}">Kelola Kategori</a></li>
+    <li><a href="{{ route('brands.index') }}">Kelola Merek</a></li>
+    <li><a href="{{ route('banners.index') }}">Kelola Banner</a></li>
+    <li><a href="{{ route('products.create') }}">Kelola Produk</a></li>
+    <li><a href="{{ route('admin.orders.index') }}">Kelola Pesanan</a></li>
+    <li><a href="{{ route('admin.shipping.index') }}">Metode Pengiriman</a></li>
+    <li><a href="{{ route('coupons.index') }}">Kelola Kupon</a></li>
 </ul>
 
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-
-    <button type="submit">
-        Logout
-    </button>
+    <button type="submit">KELUAR</button>
 </form>

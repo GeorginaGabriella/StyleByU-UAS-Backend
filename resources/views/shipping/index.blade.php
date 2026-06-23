@@ -12,7 +12,6 @@
         <th>Ongkir</th>
         <th>Estimasi (Hari)</th>
     </tr>
-
     @foreach($shippings as $ship)
     <tr>
         <td>{{ $loop->iteration }}</td>

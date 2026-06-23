@@ -10,7 +10,8 @@ class DashboardController extends Controller
     {
         if (auth()->user()->isAdmin()) {
             return view('dashboard.admin');
+        } else {
+            return view('dashboard.user');
         }
-        return view('dashboard.user');
     }
 }

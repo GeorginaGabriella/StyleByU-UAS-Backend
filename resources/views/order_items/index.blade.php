@@ -12,7 +12,6 @@
         <th>Harga Satuan</th>
         <th>Qty</th>
     </tr>
-
     @foreach($items as $item)
     <tr>
         <td>{{ $loop->iteration }}</td>

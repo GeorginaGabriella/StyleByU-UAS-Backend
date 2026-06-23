@@ -1,65 +1,20 @@
-@if(session('success'))
-<p style="color:green;">{{ session('success') }}</p>
-@endif
+<h1>STYLEBYU - REGISTER</h1>
+<hr>
 
-<h1>REGISTER STYLEBYU</h1>
-
-@if ($errors->any())
-<ul>
-    @foreach ($errors->all() as $error)
-        <li style="color:red;">{{ $error }}</li>
+@if($errors->any())
+    @foreach($errors->all() as $error)
+        <p style="color:red">{{ $error }}</p>
     @endforeach
-</ul>
 @endif
 
 <form method="POST" action="{{ route('register.post') }}">
     @csrf
-
-    Nama
-    <br>
-    <input type="text" name="name">
-    <br><br>
-
-    Email
-    <br>
-    <input type="email" name="email">
-    <br><br>
-
-    Password
-    <br>
-    <input type="password" name="password" id="password">
-
-    <button type="button" onclick="togglePassword('password')">👁</button>
-
-    <br><br>
-
-    Konfirmasi Password
-    <br>
-    <input type="password" name="password_confirmation" id="password_confirmation">
-
-    <button type="button" onclick="togglePassword('password_confirmation')">👁</button>
-
-    <br><br>
-
-    <button type="submit">Register</button>
+    <p>Nama:<br><input type="text" name="name" value="{{ old('name') }}" required></p>
+    <p>Email:<br><input type="email" name="email" value="{{ old('email') }}" required></p>
+    <p>Password:<br><input type="password" name="password" required></p>
+    <p>Konfirmasi Password:<br><input type="password" name="password_confirmation" required></p>
+    <p><button type="submit">REGISTER</button></p>
 </form>
 
-<br>
-
-<a href="{{ route('login') }}">Login</a>
-
-<script>
-function togglePassword(id)
-{
-    let field = document.getElementById(id);
-
-    if(field.type === 'password')
-    {
-        field.type = 'text';
-    }
-    else
-    {
-        field.type = 'password';
-    }
-}
-</script>
+<hr>
+<p>Sudah punya akun? <a href="{{ route('login') }}">Login</a></p>

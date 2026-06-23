@@ -12,7 +12,6 @@ class ReviewController extends Controller
     public function index($productId)
     {
         $product = Product::findOrFail($productId);
-
         $reviews = Review::with('user')
             ->where('product_id', $productId)
             ->latest()

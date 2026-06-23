@@ -17,7 +17,6 @@
         <th>Status Bayar</th>
         <th>Aksi</th>
     </tr>
-
     @foreach($orders as $order)
     <tr>
         <td>INV-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</td>
@@ -27,10 +26,8 @@
         <td>{{ $order->payment?->status ? strtoupper($order->payment->status) : 'N/A' }}</td>
         <td>
             <a href="{{ route('orders.show', $order) }}">Detail</a>
-
             <form method="POST" action="{{ route('admin.orders.updateStatus', $order) }}" style="display:inline;">
-                @csrf
-                @method('PUT')
+                @csrf @method('PUT')
                 <select name="status" onchange="this.form.submit()">
                     <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
                     <option value="paid" {{ $order->status == 'paid' ? 'selected' : '' }}>Paid</option>

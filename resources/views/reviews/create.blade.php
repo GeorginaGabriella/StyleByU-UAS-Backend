@@ -1,18 +1,10 @@
-<h1>TULIS REVIEW PRODUK</h1>
-
-<p>
-    Produk: <strong>{{ $product->name }}</strong>
-</p>
-
-<p>
-    Order: INV-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
-</p>
-
+<h1>TULIS ULASAN PRODUK</h1>
+<p>Produk: <strong>{{ $product->name }}</strong></p>
+<p>Pesanan: INV-{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</p>
 <hr>
 
 <form method="POST" action="{{ route('reviews.store') }}">
     @csrf
-
     <input type="hidden" name="product_id" value="{{ $product->id }}">
     <input type="hidden" name="order_id" value="{{ $order->id }}">
 
@@ -33,9 +25,8 @@
 
     <br><br>
 
-    <button type="submit">Kirim Review</button>
+    <button type="submit">Kirim Ulasan</button>
 </form>
 
 <br>
-
 <a href="{{ route('orders.show', $order->id) }}">Kembali ke Invoice</a>

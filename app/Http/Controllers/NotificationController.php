@@ -22,9 +22,7 @@ class NotificationController extends Controller
             abort(403);
         }
 
-        $notification->update([
-            'is_read' => true
-        ]);
+        $notification->update(['is_read' => true]);
 
         return back()->with('success', 'Notifikasi sudah dibaca');
     }

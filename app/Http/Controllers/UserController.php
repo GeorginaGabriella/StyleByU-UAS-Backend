@@ -10,7 +10,6 @@ class UserController extends Controller
     public function edit()
     {
         $user = auth()->user();
-
         return view('user.edit', compact('user'));
     }
 
@@ -22,12 +21,8 @@ class UserController extends Controller
         ]);
 
         $user = User::find(auth()->id());
+        $user->update($request->only('name', 'email'));
 
-        $user->update(
-            $request->only('name', 'email')
-        );
-
-        return back()
-            ->with('success', 'Profil berhasil diupdate');
+        return back()->with('success', 'Profil berhasil diupdate');
     }
 }

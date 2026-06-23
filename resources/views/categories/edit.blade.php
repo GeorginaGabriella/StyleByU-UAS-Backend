@@ -1,34 +1,9 @@
-<h1>Ubah Category</h1>
-
-<form
-    method="POST"
-    action="{{ route('categories.update',$category) }}"
->
-
-    @csrf
-    @method('PUT')
-
-    Nama Category
-
-    <br>
-
-    <input
-        type="text"
-        name="name"
-        value="{{ $category->name }}"
-        required
-    >
-
+<h1>Ubah Kategori</h1>
+<form method="POST" action="{{ route('categories.update', $category) }}">
+    @csrf @method('PUT')
+    Nama Kategori:<br>
+    <input type="text" name="name" value="{{ $category->name }}" required>
     <br><br>
-
-    <button type="submit">
-        Simpan
-    </button>
-
+    <button type="submit">Perbarui</button>
 </form>
-
-<br>
-
-<a href="{{ route('categories.index') }}">
-    Kembali
-</a>
+<br><a href="{{ route('categories.index') }}">Kembali</a>

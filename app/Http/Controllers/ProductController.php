@@ -11,9 +11,9 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Product::with(['category','brand'])
-            ->when($request->search, function($query) use ($request){
-                $query->where('name','like','%'.$request->search.'%');
+        $products = Product::with(['category', 'brand'])
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
             })
             ->get();
 
@@ -24,36 +24,27 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $brands = Brand::all();
-
-        return view('products.create', compact('categories','brands'));
+        return view('products.create', compact('categories', 'brands'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
-            'price'=>'required|numeric',
-            'stock'=>'required|integer'
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer'
         ]);
 
         Product::create($request->only([
-            'name',
-            'description',
-            'image',
-            'price',
-            'stock',
-            'is_active',
-            'category_id',
-            'brand_id'
+            'name', 'description', 'image', 'price', 'stock', 'is_active', 'category_id', 'brand_id'
         ]));
 
-        return redirect()
-            ->route('products.index')
-            ->with('success','Product created successfully');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dibuat');
     }
 
     public function show(Product $product)
     {
+        $product->load('variants', 'reviews.user');
         return view('products.show', compact('product'));
     }
 
@@ -61,40 +52,27 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $brands = Brand::all();
-
-        return view('products.edit', compact('product','categories','brands'));
+        return view('products.edit', compact('product', 'categories', 'brands'));
     }
 
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name'=>'required',
-            'price'=>'required|numeric',
-            'stock'=>'required|integer'
+            'name' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer'
         ]);
 
         $product->update($request->only([
-            'name',
-            'description',
-            'image',
-            'price',
-            'stock',
-            'is_active',
-            'category_id',
-            'brand_id'
+            'name', 'description', 'image', 'price', 'stock', 'is_active', 'category_id', 'brand_id'
         ]));
 
-        return redirect()
-            ->route('products.index')
-            ->with('success','Product updated successfully');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
     }
 
     public function destroy(Product $product)
     {
         $product->delete();
-
-        return redirect()
-            ->route('products.index')
-            ->with('success','Product deleted successfully');
+        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
     }
 }

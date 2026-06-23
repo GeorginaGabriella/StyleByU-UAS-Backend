@@ -10,11 +10,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-
-        return view(
-            'categories.index',
-            compact('categories')
-        );
+        return view('categories.index', compact('categories'));
     }
 
     public function create()
@@ -24,75 +20,34 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
-        Category::create(
-            $request->only('name')
-        );
-
-        return redirect()
-            ->route('categories.index')
-            ->with(
-                'success',
-                'Category created successfully.'
-            );
+        $request->validate(['name' => 'required']);
+        Category::create($request->only('name'));
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dibuat.');
     }
 
     public function show(Category $category)
     {
-        return view(
-            'categories.show',
-            compact('category')
-        );
+        return view('categories.show', compact('category'));
     }
 
     public function edit(Category $category)
     {
-        return view(
-            'categories.edit',
-            compact('category')
-        );
+        return view('categories.edit', compact('category'));
     }
 
-    public function update(
-        Request $request,
-        Category $category
-    ) {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
-        $category->update(
-            $request->only('name')
-        );
-
-        return redirect()
-            ->route('categories.index')
-            ->with(
-                'success',
-                'Category updated successfully.'
-            );
+    public function update(Request $request, Category $category)
+    {
+        $request->validate(['name' => 'required']);
+        $category->update($request->only('name'));
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy(Category $category)
     {
         if ($category->products()->count() > 0) {
-
-            return back()->with(
-                'error',
-                'Category masih digunakan product'
-            );
+            return back()->with('error', 'Kategori masih digunakan oleh produk');
         }
-
         $category->delete();
-
-        return redirect()
-            ->route('categories.index')
-            ->with(
-                'success',
-                'Category deleted successfully.'
-            );
+        return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

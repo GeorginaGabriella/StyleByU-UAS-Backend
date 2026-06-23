@@ -1,52 +1,22 @@
+<h1>STYLEBYU - LOGIN</h1>
+<hr>
+
 @if(session('success'))
-<p style="color:green;">{{ session('success') }}</p>
+    <p style="color:green">{{ session('success') }}</p>
 @endif
 
-<h1>LOGIN STYLEBYU</h1>
-
-@if ($errors->any())
-<ul>
-    @foreach ($errors->all() as $error)
-        <li style="color:red;">{{ $error }}</li>
+@if($errors->any())
+    @foreach($errors->all() as $error)
+        <p style="color:red">{{ $error }}</p>
     @endforeach
-</ul>
 @endif
 
 <form method="POST" action="{{ route('login.post') }}">
     @csrf
-
-    Email
-    <br>
-    <input type="email" name="email">
-    <br><br>
-
-    Password
-    <br>
-    <input type="password" name="password" id="password">
-
-    <button type="button" onclick="togglePassword()">👁</button>
-
-    <br><br>
-
-    <button type="submit">Login</button>
+    <p>Email:<br><input type="email" name="email" value="{{ old('email') }}" required></p>
+    <p>Password:<br><input type="password" name="password" required></p>
+    <p><button type="submit">LOGIN</button></p>
 </form>
 
-<br>
-
-<a href="{{ route('register') }}">Register</a>
-
-<script>
-function togglePassword()
-{
-    let password = document.getElementById('password');
-
-    if(password.type === 'password')
-    {
-        password.type = 'text';
-    }
-    else
-    {
-        password.type = 'password';
-    }
-}
-</script>
+<hr>
+<p>Belum punya akun? <a href="{{ route('register') }}">Register</a></p>

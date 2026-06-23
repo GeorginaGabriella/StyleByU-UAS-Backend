@@ -38,8 +38,7 @@ class AddressController extends Controller
             'postal_code' => $request->postal_code
         ]);
 
-        return redirect()->route('addresses.index')
-            ->with('success', 'Alamat berhasil ditambahkan');
+        return redirect()->route('addresses.index')->with('success', 'Alamat berhasil ditambahkan');
     }
 
     public function edit(Address $address)
@@ -47,7 +46,6 @@ class AddressController extends Controller
         if ($address->user_id != auth()->id()) {
             abort(403);
         }
-
         return view('addresses.edit', compact('address'));
     }
 
@@ -66,16 +64,10 @@ class AddressController extends Controller
         ]);
 
         $address->update($request->only([
-            'title',
-            'recipient_name',
-            'phone',
-            'full_address',
-            'city',
-            'postal_code'
+            'title', 'recipient_name', 'phone', 'full_address', 'city', 'postal_code'
         ]));
 
-        return redirect()->route('addresses.index')
-            ->with('success', 'Alamat berhasil diupdate');
+        return redirect()->route('addresses.index')->with('success', 'Alamat berhasil diupdate');
     }
 
     public function destroy(Address $address)
@@ -83,9 +75,7 @@ class AddressController extends Controller
         if ($address->user_id != auth()->id()) {
             abort(403);
         }
-
         $address->delete();
-
         return back()->with('success', 'Alamat berhasil dihapus');
     }
 }

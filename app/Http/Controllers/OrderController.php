@@ -37,9 +37,11 @@ class OrderController extends Controller
         }
 
         $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
+        $selectedIds = $checkoutData['selected_items'] ?? [];
+        $selectedItems = $cart->items()->whereIn('id', $selectedIds)->get();
 
-        if ($cart->items->count() == 0) {
-            return redirect()->route('cart.index')->with('error', 'Keranjang kosong');
+        if ($selectedItems->count() == 0) {
+            return redirect()->route('cart.index')->with('error', 'Item checkout tidak ditemukan.');
         }
 
         $order = Order::create([
@@ -48,10 +50,11 @@ class OrderController extends Controller
             'shipping_method_id' => $checkoutData['shipping_method_id'],
             'total_amount' => $checkoutData['total_amount'],
             'shipping_cost' => $checkoutData['shipping_cost'],
+            'discount_amount' => $checkoutData['discount_amount'] ?? 0,
             'status' => 'pending'
         ]);
 
-        foreach ($cart->items as $item) {
+        foreach ($selectedItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $item->product_id,
@@ -75,11 +78,12 @@ class OrderController extends Controller
             'status' => 'pending'
         ]);
 
-        $cart->items()->delete();
+        $cart->items()->whereIn('id', $selectedIds)->delete();
 
-        session()->forget('checkout_data');
+        session()->forget(['checkout_data', 'checkout_selected_items']);
 
-        return redirect()->route('orders.show', $order->id)->with('success', 'Order berhasil dibuat!');
+        return redirect()->route('orders.show', $order->id)
+            ->with('success', 'Order berhasil dibuat!');
     }
 
     public function adminIndex()
@@ -96,10 +100,10 @@ class OrderController extends Controller
 
         $order->update(['status' => $request->status]);
 
-        if ($request->status == 'paid' && $order->payment?->status !== 'paid') {
+        if ($request->status == 'paid' && $order->payment) {
             $order->payment()->update(['status' => 'paid']);
         }
 
-        return back()->with('success', 'Status order diupdate');
+        return back()->with('success', 'Status pesanan berhasil diperbarui');
     }
 }

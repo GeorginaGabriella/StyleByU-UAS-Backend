@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
+    Route::post('/checkout/prepare', [CheckoutController::class, 'prepare'])->name('checkout.prepare');
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
 
@@ -58,7 +59,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/edit', [UserController::class, 'update'])->name('user.update');
 
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/orders/{order}/items', [OrderItemController::class, 'index'])->name('order_items.index');
@@ -76,16 +76,21 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{product}', [ProductController::class, 'show'])
+    ->whereNumber('product')
+    ->name('products.show');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('brands', BrandController::class);
     Route::resource('banners', BannerController::class);
-    Route::resource('products', ProductController::class)->except(['index', 'show']);
+
+    Route::resource('products', ProductController::class)->only(['create', 'store', 'edit', 'update', 'destroy']);
 
     Route::get('/products/{product}/variants', [ProductVariantController::class, 'index'])->name('variants.index');
     Route::post('/products/{product}/variants', [ProductVariantController::class, 'store'])->name('variants.store');
+    Route::get('/variants/{variant}/edit', [ProductVariantController::class, 'edit'])->name('variants.edit');
+    Route::put('/variants/{variant}', [ProductVariantController::class, 'update'])->name('variants.update');
     Route::delete('/variants/{variant}', [ProductVariantController::class, 'destroy'])->name('variants.destroy');
 
     Route::get('/admin/shipping', [ShippingController::class, 'index'])->name('admin.shipping.index');
