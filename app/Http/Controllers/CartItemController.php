@@ -13,19 +13,30 @@ class CartItemController extends Controller
         $userCart = Cart::where('user_id', auth()->id())->first();
 
         if (!$userCart || $cartItem->cart_id != $userCart->id) {
-            abort(403, 'Akses ditolak');
+            abort(403);
         }
 
-        $request->validate(['quantity' => 'required|integer|min:1']);
+        $qty = $request->quantity;
+        $variantId = $request->product_variant_id;
 
-        $variant = $cartItem->variant;
-        if ($variant && $request->quantity > $variant->stock) {
-            return back()->with('error', 'Stok tidak cukup');
+        if ($variantId === '' || $variantId === null) {
+            $variantId = null;
         }
 
-        $cartItem->update(['quantity' => $request->quantity]);
+        $harga = $cartItem->product->price;
+        if ($variantId) {
+            $cekVariant = \App\Models\ProductVariant::find($variantId);
+            if ($cekVariant && $cekVariant->price != null) {
+                $harga = $cekVariant->price;
+            }
+        }
 
-        return back()->with('success', 'Keranjang berhasil diperbarui');
+        $cartItem->product_variant_id = $variantId;
+        $cartItem->quantity = $qty;
+        $cartItem->price = $harga;
+        $cartItem->save();
+
+        return back()->with('success', 'Keranjang berhasil diperbarui.');
     }
 
     public function destroy(CartItem $cartItem)
@@ -33,11 +44,11 @@ class CartItemController extends Controller
         $userCart = Cart::where('user_id', auth()->id())->first();
 
         if (!$userCart || $cartItem->cart_id != $userCart->id) {
-            abort(403, 'Akses ditolak');
+            abort(403);
         }
 
         $cartItem->delete();
 
-        return back()->with('success', 'Item berhasil dihapus');
+        return back()->with('success', 'Item dihapus.');
     }
 }
