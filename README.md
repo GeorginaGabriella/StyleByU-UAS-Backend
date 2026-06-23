@@ -1,4 +1,3 @@
-```markdown
 # 👕 StyleByU - E-Commerce Fashion Web App
 
 Aplikasi e-commerce berbasis web yang dibangun untuk memenuhi tugas Ujian Akhir Semester (UAS) mata kuliah Back-End Programming. StyleByU adalah sistem toko online fashion yang mengimplementasikan konsep MVC (Model-View-Controller) menggunakan framework Laravel dan database MySQL.
